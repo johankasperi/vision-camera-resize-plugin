@@ -247,7 +247,7 @@ PODS:
     - React-jsi (= 0.63.4)
   - vision-camera-resize-plugin (0.1.1):
     - React-Core
-  - VisionCamera (2.0.0):
+  - VisionCamera (2.10.0):
     - React
     - React-callinvoker
     - React-Core
@@ -374,10 +374,10 @@ SPEC CHECKSUMS:
   React-RCTText: 5c51df3f08cb9dedc6e790161195d12bac06101c
   React-RCTVibration: ae4f914cfe8de7d4de95ae1ea6cc8f6315d73d9d
   ReactCommon: 73d79c7039f473b76db6ff7c6b159c478acbbb3b
-  vision-camera-resize-plugin: 92b75b455a3fa6008991a1970c57d25616bbfa25
-  VisionCamera: 05d7d5d8df6513e61f6b6ad94d6c6befc73b780d
+  vision-camera-resize-plugin: 50ad6740efc9b781a63931f326df1827bb585875
+  VisionCamera: a63e73bdfd7e93aac982f0ee94fc4ca76d2c7598
   Yoga: 4bd86afe9883422a7c4028c00e34790f560923d6
 
 PODFILE CHECKSUM: b2810249dbfc38dcc63b2ebb40d6c982d5707d84
 
-COCOAPODS: 1.10.1
+COCOAPODS: 1.11.2

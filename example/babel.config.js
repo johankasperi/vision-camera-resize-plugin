@@ -13,9 +13,11 @@ module.exports = {
         },
       },
     ],
-    'react-native-reanimated/plugin',
-    {
-      globals: ['__resize'],
-    },
+    [
+      'react-native-reanimated/plugin',
+      {
+        globals: ['__resize'],
+      },
+    ],
   ],
 };

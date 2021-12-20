@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import { StyleSheet, View, ActivityIndicator } from 'react-native';
-import { useSharedValue } from 'react-native-reanimated';
 import {
   Camera,
   useCameraDevices,
@@ -10,7 +9,6 @@ import { resize } from 'vision-camera-resize-plugin';
 
 export default function App() {
   const [hasPermission, setHasPermission] = useState(false);
-  const currentLabel = useSharedValue('');
 
   const devices = useCameraDevices();
   const device = devices.back;
@@ -22,21 +20,20 @@ export default function App() {
     })();
   }, []);
 
-  const frameProcessor = useFrameProcessor(
-    (frame) => {
-      'worklet';
-      resize(
-        frame,
-        0,
-        0,
-        frame.width / 50,
-        frame.width / 50,
-        frame.width / 50,
-        frame.width / 50
-      );
-    },
-    [currentLabel]
-  );
+  const frameProcessor = useFrameProcessor((frame) => {
+    'worklet';
+    // @ts-expect-error
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const resizedFrame = resize(
+      frame,
+      0,
+      0,
+      frame.width / 4,
+      frame.height / 4,
+      frame.width / 4,
+      frame.height / 4
+    );
+  }, []);
 
   return (
     <View style={styles.container}>

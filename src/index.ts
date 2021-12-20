@@ -6,19 +6,9 @@ export function resize(
   cropX: number,
   cropY: number,
   cropWidth: number,
-  cropHeight: number,
-  scaleWidth: number,
-  scaleHeight: number
-): Frame {
+  cropHeight: number
+): Frame | undefined {
   'worklet';
   // @ts-expect-error Frame Processors are not typed.
-  return __resize(
-    frame,
-    cropX,
-    cropY,
-    cropWidth,
-    cropHeight,
-    scaleWidth,
-    scaleHeight
-  );
+  return __resize(frame, cropX, cropY, cropWidth, cropHeight);
 }

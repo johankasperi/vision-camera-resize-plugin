@@ -5,32 +5,37 @@ class VisionCameraResizePlugin: NSObject, FrameProcessorPluginBase {
     
     @objc
     public static func callback(_ frame: Frame!, withArgs args: [Any]!) -> Any! {
-        
-        if let cvImageBuffer = CMSampleBufferGetImageBuffer(frame.buffer),
-           let pixelBuffer = resizePixelBuffer(cvImageBuffer, cropX: 0, cropY: 0, cropWidth: 100, cropHeight: 100, scaleWidth: 100, scaleHeight: 100) {
-
-            var formatDesc: CMFormatDescription? = nil
-            CMVideoFormatDescriptionCreateForImageBuffer(allocator: kCFAllocatorDefault, imageBuffer: pixelBuffer, formatDescriptionOut: &formatDesc)
-            if formatDesc != nil {
-                return nil
-            }
-
-            var sampleTimingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
-            sampleTimingInfo.presentationTimeStamp = CMTime.zero
-            sampleTimingInfo.duration = CMTime.invalid
-            sampleTimingInfo.decodeTimeStamp = CMTime.invalid
-            var sampleBuffer: CMSampleBuffer? = nil
-            CMSampleBufferCreateReadyWithImageBuffer(allocator: kCFAllocatorDefault,
-                    imageBuffer: pixelBuffer,
-                    formatDescription: formatDesc!,
-                    sampleTiming: &sampleTimingInfo,
-                    sampleBufferOut: &sampleBuffer);
-
-            let newFrame = Frame(buffer: sampleBuffer, orientation: frame.orientation)
-            return newFrame
+        guard let cropX = args[0] as? Int,
+            let cropY = args[1] as? Int,
+            let cropWidth = args[2] as? Int,
+            let cropHeight = args[3] as? Int,
+            let scaleWidth = args[4] as? Int,
+            let scaleHeight = args[5] as? Int,
+            let cvImageBuffer = CMSampleBufferGetImageBuffer(frame.buffer),
+            let pixelBuffer = resizePixelBuffer(cvImageBuffer, cropX: cropX, cropY: cropY, cropWidth: cropWidth, cropHeight: cropHeight, scaleWidth: scaleWidth, scaleHeight: scaleHeight) else {
+            return nil
         }
         
-        return nil
+        var formatDesc: CMFormatDescription? = nil
+        CMVideoFormatDescriptionCreateForImageBuffer(allocator: kCFAllocatorDefault, imageBuffer: pixelBuffer, formatDescriptionOut: &formatDesc)
+        if formatDesc == nil {
+            return nil
+        }
+
+        var sampleTimingInfo: CMSampleTimingInfo = CMSampleTimingInfo()
+        sampleTimingInfo.presentationTimeStamp = CMTime.zero
+        sampleTimingInfo.duration = CMTime.invalid
+        sampleTimingInfo.decodeTimeStamp = CMTime.invalid
+        var sampleBuffer: CMSampleBuffer? = nil
+        CMSampleBufferCreateReadyWithImageBuffer(allocator: kCFAllocatorDefault,
+                imageBuffer: pixelBuffer,
+                formatDescription: formatDesc!,
+                sampleTiming: &sampleTimingInfo,
+                sampleBufferOut: &sampleBuffer);
+        
+        let newFrame = Frame(buffer: sampleBuffer, orientation: frame.orientation)
+
+        return newFrame
     }    
     
     /**
